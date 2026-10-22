@@ -15,4 +15,9 @@
       <ProjectReference Include="..\InTown.Data\InTown.Data.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="DTOS\" />
+      <Folder Include="Services\" />
+    </ItemGroup>
+
 </Project>

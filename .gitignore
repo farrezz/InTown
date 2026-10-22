@@ -7,3 +7,8 @@ riderModule.iml
 .DS_Store
 .idea/
 *.DotSettings.user
+# InTown
+*.db
+*.db-shm
+*.db-wal
+InTown.API/wwwroot/uploads/
