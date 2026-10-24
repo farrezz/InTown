@@ -1,6 +1,8 @@
 namespace InTown.Core.Models;
 
-public class AttendResult
+public enum AttendResult
 {
-    
+    Ok,
+    Notfound,
+    AlreadyGoing
 }
