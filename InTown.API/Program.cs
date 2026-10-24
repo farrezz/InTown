@@ -47,10 +47,12 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 // ===== Repositories ====
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IEventRepository, EventRepository>();
 
 
 // ===== Services =====
 builder.Services.AddScoped<IAuthService, AuthService>(); 
+builder.Services.AddScoped<IEventService, EventService>();
 
 // ===== Auth =====
 builder.Services.AddScoped<TokenService>();
