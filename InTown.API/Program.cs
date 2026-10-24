@@ -1,3 +1,6 @@
+using InTown.Data;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // ===== Controllers and Swagger =====
@@ -12,7 +15,9 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-
+// ============ Database =================
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("Default")));
 
 if (app.Environment.IsDevelopment())
 {
