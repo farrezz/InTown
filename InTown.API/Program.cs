@@ -1,3 +1,4 @@
+using InTown.API.Services;
 using InTown.Data;
 using Microsoft.EntityFrameworkCore;
 using InTown.Core.Interfaces;
@@ -25,7 +26,7 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>(); 
 
 // ===== Auth =====
-
+builder.Services.AddScoped<TokenService>();
 
 // ===== CORS =====
 
