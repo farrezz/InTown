@@ -53,6 +53,7 @@ builder.Services.AddScoped<IEventRepository, EventRepository>();
 // ===== Services =====
 builder.Services.AddScoped<IAuthService, AuthService>(); 
 builder.Services.AddScoped<IEventService, EventService>();
+builder.Services.AddScoped<ImageService>();
 
 // ===== Auth =====
 builder.Services.AddScoped<TokenService>();
@@ -83,6 +84,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+
+app.UseStaticFiles();
 
 app.UseHttpsRedirection();
 
