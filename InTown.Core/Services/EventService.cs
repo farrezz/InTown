@@ -1,4 +1,3 @@
-using System.Text;
 using InTown.Core.Interfaces;
 using InTown.Core.Models;
 
@@ -18,15 +17,15 @@ public class EventService : IEventService
     {
         var all = await _eventRepo.GetAll();
         
-        //rule: only show events that haven´t happened yet
+        //rule: only show events that haven't happened yet
         //TODO: lookover this rule
-        var resultat = new List<Event>();
+        var result = new List<Event>();
         foreach (var e in all)
         {
             if (e.StartDate  >= DateTime.Today)
-                resultat.Add(e);
+                result.Add(e);
         }
-        return resultat;
+        return result;
         
     }
 
@@ -47,8 +46,8 @@ public class EventService : IEventService
         
         var saved = await _eventRepo.Add(ev);   
         
-        //load it again so createdby is filled in (the controller needs the creator´s name)
-        var full=await _eventRepo.GetById(ev.Id);
+        //load it again so created by is filled in (the controller needs the creator's name)
+        var full=await _eventRepo.GetById(saved.Id);
         return full!;
     }
 
@@ -100,4 +99,25 @@ public class EventService : IEventService
         return AttendResult.Ok;
 
     }
+
+    public async Task<bool> CanEdit(int eventId, int userId)
+    {
+        var ev = await _eventRepo.GetById(eventId);
+        if (ev == null)
+            return false;
+        
+        return ev.CreatedByUserId == userId;
+    }
+
+    public async Task SetImage(int eventId, string imageUrl)
+    {
+        var ev = await _eventRepo.GetById(eventId);
+        if (ev == null)
+            return;
+        
+        ev.ImageUrl = imageUrl;
+        await _eventRepo.Update(ev);
+    }
+    
+    
 }

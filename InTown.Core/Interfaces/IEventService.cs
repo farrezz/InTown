@@ -10,4 +10,8 @@ public interface IEventService
     Task<bool> Update (int eventId, int userId, string title, string location, string description, DateTime startDate, DateTime endDate);
     Task<bool> Delete(int eventId,  int userId);
     Task<AttendResult> Attend(int eventId, int userId);
+    
+    //Photo
+    Task <bool> CanEdit(int eventId, int userId);
+    Task SetImage(int eventId, string imageUrl);
 }
