@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using InTown.API.DTOS;
+using InTown.API.Services;
 using InTown.Core.Interfaces;
 using InTown.Core.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -13,10 +14,12 @@ namespace InTown.API.Controllers;
 public class EventsController : ControllerBase
 {
     private readonly IEventService _eventService;
+    private readonly ImageService _imageService;
 
-    public EventsController(IEventService eventService)
+    public EventsController(IEventService eventService, ImageService imageService)
     {
         _eventService = eventService;
+        _imageService = imageService;
     }
 
     [HttpGet]
@@ -87,6 +90,29 @@ public class EventsController : ControllerBase
         return Ok();
     } 
     
+    //POST /api/events/5/image
+    [HttpPost("{id}/image")]
+    public async Task<IActionResult> UploadImage(int id, IFormFile file)
+    {
+        int userId = GetUserId();
+        
+        //1. is this their event?
+        bool canEdit = await _eventService.CanEdit(id, userId);
+        if (!canEdit)
+            return Forbid();
+        
+        //2 Save the file
+        string? imageUrl = await _imageService.Save(file);
+        if (imageUrl == null)
+            return BadRequest("Use a jpg, png, or webp image under 5 MB");
+        
+        //3. Remember where it is
+        await _eventService.SetImage(id, imageUrl);
+        return Ok(new { imageUrl = imageUrl });
+    }
+    
+    
+    
     // read the user id from the token (the wristband)
     private int GetUserId()
     {   
@@ -128,5 +154,7 @@ public class EventsController : ControllerBase
 
         return dto;
     }
+    
+    
 
 }
