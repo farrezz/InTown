@@ -77,6 +77,18 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 // ===== CORS =====
+builder.Services.AddCors(options =>
+    {
+        options.AddPolicy("AllowFrontend", policy =>
+        {
+            policy.WithOrigins("http://localhost:4200")
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+    }
+);
+
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -86,12 +98,12 @@ if (app.Environment.IsDevelopment())
 }
 
 
-app.UseStaticFiles();
-
+app.UseStaticFiles(); //Serves everything inside wwwroot
+app.UseCors("AllowFrontend"); // lets angular call the API
 app.UseHttpsRedirection();
 
-app.UseAuthentication();
-app.UseAuthorization();
+app.UseAuthentication(); // reads the wristband (who are you)
+app.UseAuthorization(); //are you allowed in?
 
 app.MapControllers();
 
